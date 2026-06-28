@@ -201,8 +201,8 @@ plt.title("Quasi-static C/200 Discharge SOC Tracking (GATE 2 Verification)", fon
 plt.xlabel("Time (Hours)", fontsize=11)
 plt.ylabel("SOC (%)", fontsize=11)
 plt.grid(True, linestyle=':', alpha=0.6)
-plt.legend(loc='lower left', frameon=True)
-plt.text(0.02, 0.1, "*Synthetic quasi-static discharge — modeled, not measured*", 
+plt.legend(loc='upper right', frameon=True)
+plt.text(0.02, 0.09, "*Synthetic quasi-static discharge — modeled, not measured*", 
          transform=plt.gca().transAxes, fontsize=9.5, style='italic', bbox=dict(facecolor='white', alpha=0.8, edgecolor='none'))
 plt.text(0.02, 0.03, "*Tester Coulomb-count reference (practical truth)*", 
          transform=plt.gca().transAxes, fontsize=9.5, style='italic', bbox=dict(facecolor='white', alpha=0.8, edgecolor='none'))
@@ -283,8 +283,8 @@ plt.xlabel("Time (Hours)", fontsize=11)
 plt.ylabel("SOC (%)", fontsize=11)
 plt.ylim([-5, 105])
 plt.grid(True, linestyle=':', alpha=0.6)
-plt.legend(loc='lower left', frameon=True)
-plt.text(0.02, 0.1, "*Tester Coulomb-count reference (practical truth)*", 
+plt.legend(loc='upper right', frameon=True)
+plt.text(0.02, 0.03, "*Tester Coulomb-count reference (practical truth)*", 
          transform=plt.gca().transAxes, fontsize=9.5, style='italic', bbox=dict(facecolor='white', alpha=0.8, edgecolor='none'))
 plt.tight_layout()
 plt.savefig('results/dynamic_tracking_divergence.png')
@@ -352,7 +352,7 @@ plt.xlabel("Sampling Interval Δt (seconds, Log Scale)", fontsize=11)
 plt.ylabel("SOC RMSE (%)", fontsize=11)
 plt.grid(True, which="both", linestyle=':', alpha=0.6)
 plt.legend(loc='upper left', frameon=True)
-plt.text(0.02, 0.15, "*Tester Coulomb-count reference (practical truth)*", 
+plt.text(0.02, 0.03, "*Tester Coulomb-count reference (practical truth)*", 
          transform=plt.gca().transAxes, fontsize=9.5, style='italic', bbox=dict(facecolor='white', alpha=0.8, edgecolor='none'))
 plt.tight_layout()
 plt.savefig('results/safe_dt_curve.png')
