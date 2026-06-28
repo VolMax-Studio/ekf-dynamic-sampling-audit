@@ -178,7 +178,7 @@ while t < N_static - 1:
     for step in range(1, int(dt) + 1):
         idx = t + step
         if idx < N_static:
-            soc_static_sub[idx] = soc_static_sub[t] + (I_static_val * step) / (capacity_Ah * 3600.0)
+            soc_static_sub[idx] = np.clip(soc_static_sub[t] + (I_static_val * step) / (capacity_Ah * 3600.0), 0.0, 1.0)
     t = next_t
     static_sample_indices.append(t)
 
@@ -233,7 +233,7 @@ while t < N_dyn - 1:
     for step in range(1, int(dt) + 1):
         idx = t + step
         if idx < N_dyn:
-            soc_dyn_sub1[idx] = soc_dyn_sub1[t] + (I_sample * step) / (capacity_Ah * 3600.0)
+            soc_dyn_sub1[idx] = np.clip(soc_dyn_sub1[t] + (I_sample * step) / (capacity_Ah * 3600.0), 0.0, 1.0)
     t = next_t
     dyn_sample_indices1.append(t)
 
@@ -315,7 +315,7 @@ for dt in dts:
         for step in range(1, int(dt_step) + 1):
             idx = t + step
             if idx < N_static:
-                soc_est[idx] = soc_est[t] + (I_sample * step) / (capacity_Ah * 3600.0)
+                soc_est[idx] = np.clip(soc_est[t] + (I_sample * step) / (capacity_Ah * 3600.0), 0.0, 1.0)
         t = next_t
     sweep_rmse_static.append(float(np.sqrt(np.mean((SOC_static_true - soc_est) ** 2))))
     
@@ -338,7 +338,7 @@ for dt in dts:
         for step in range(1, int(dt_step) + 1):
             idx = t + step
             if idx < N_dyn:
-                soc_est_d[idx] = soc_est_d[t] + (I_sample * step) / (capacity_Ah * 3600.0)
+                soc_est_d[idx] = np.clip(soc_est_d[t] + (I_sample * step) / (capacity_Ah * 3600.0), 0.0, 1.0)
         t = next_t
     sweep_rmse_dynamic.append(float(np.sqrt(np.mean((SOC_dyn_true - soc_est_d) ** 2))))
 

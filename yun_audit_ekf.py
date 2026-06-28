@@ -91,7 +91,7 @@ class BatteryEKF:
             [0.0, exp_factor]
         ])
         
-        self.P = A @ self.P @ A.T + self.Q
+        self.P = A @ self.P @ A.T + self.Q * dt
         
     def update(self, V, I):
         """

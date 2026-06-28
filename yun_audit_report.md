@@ -71,29 +71,33 @@ Under a quasi-static DC load, the dynamic sampling rule holds the estimation err
 
 ## 5. Dynamic Load Evaluation (Stage 3 Divergence)
 
-We then evaluated the dynamic sampling scheme on the real-world dynamic drive-cycle data at $25^\circ\text{C}$ (47,517 samples, 13.2 hours). We evaluated two distinct implementation cases:
+We evaluated the dynamic sampling scheme on the **LG HG2 Mixed Drive Cycle at 25°C** (consisting of sequential standard cycles: UDDS, HWFET, LA92, and US06, spanning 47,517 samples or 13.2 hours). To ensure a fair evaluation and eliminate any "strawman" implementations, both EKF setups were implemented with:
+1.  **Time-scaled Process Noise ($Q_k = Q_c \cdot \Delta t$):** The process noise covariance is dynamically scaled with the time step $\Delta t$ to reflect increased state uncertainty over long intervals.
+2.  **Physical State Clamping:** The SOC state is strictly clamped to its physical bounds $[0.0, 1.0]$ in both the estimator updates and the intermediate state reconstruction to prevent unhandled overflow.
+
+We evaluated two distinct implementation cases:
 
 ### 5.1 Case 1: Pure Sub-sampling (The Audited Claim)
 Both the State Prediction (Coulomb counting) and Measurement Update steps of the EKF are sub-sampled. The microcontroller sleeps between sampling instants and performs a single EKF step using the current and voltage measured at the sampling instant.
-*   **SOC RMSE (vs. true):** **101.8838%** (Complete Divergence)
-*   **Sample Reduction:** **99.6591%**
+*   **SOC RMSE (vs. true):** **24.8408%** (Severe estimation divergence)
+*   **Sample Reduction:** **99.7159%**
 
 ### 5.2 Case 2: Hybrid Sub-sampling
 The State Prediction (Coulomb counting) runs continuously at 1 Hz in the background to capture high-frequency current transients, while only the EKF Measurement Update (Kalman correction) is sub-sampled.
 *   **SOC RMSE (vs. true):** **0.9266%** (Stable tracking)
-*   **Sample Reduction (Update step only):** **99.6591%**
+*   **Sample Reduction (Update step only):** **99.7159%**
 
 ### 5.3 Divergence Analysis
 The dynamic sampling scheme's failure under transient loads is governed by a **temporal-discretization and model-mismatch mechanism**. 
 
 Under a dynamic profile, the current fluctuates rapidly on a second-to-second basis. In Case 1 (Pure Sub-sampling), when $\Delta t = 1000\text{ s}$, the EKF assumes that the current measured at the sampling instant $I(t_{k+1})$ remains constant over the entire 1000-second interval. This crude discretization integrates a highly biased current value, causing the state prediction to deviate immediately. 
 
-Furthermore, the polarization RC voltage $V_{rc}$ has a time constant of $\tau \approx 48\text{ s}$. Under transient load, $V_{rc}$ fluctuates rapidly, but a large $\Delta t = 1000\text{ s}$ violates the linearization of the non-linear measurement equation. When the EKF update finally arrives, the Jacobian $H$ is evaluated in a highly inaccurate state region, and the large innovation error causes the Kalman corrections to push the estimator into positive feedback and immediate instability.
+Furthermore, the polarization RC voltage $V_{rc}$ has a time constant of $\tau \approx 48\text{ s}$. Under transient load, $V_{rc}$ fluctuates rapidly, but a large $\Delta t = 1000\text{ s}$ violates the linearization of the non-linear measurement equation. Even though the process noise covariance $Q$ is properly scaled and the state is physically clamped, the Kalman corrections push the estimator into positive feedback and divergence, yielding an unacceptably high **24.84% RMSE**.
 
 In Case 2 (Hybrid Sub-sampling), stability is restored because Coulomb counting runs at 1 Hz, maintaining an accurate state prediction. However, **this case loses the advertised 99.65% CPU power savings**, as the microcontroller must remain active to measure current and execute prediction equations at 1 Hz.
 
 ![Dynamic tracking divergence](/home/volmax-studio/.gemini/antigravity/brain/706c8f28-84ae-40ca-b2e7-a0e0ac75ce73/.tempmediaStorage/results_dynamic.png)
-*Figure 2: SOC tracking under a dynamic drive-cycle profile. Pure sub-sampling (Case 1) completely diverges, while Hybrid sub-sampling (Case 2) remains stable but requires continuous 1 Hz current integration.*
+*Figure 2: SOC tracking under the LG HG2 Mixed Drive Cycle profile at 25°C. Pure sub-sampling (Case 1) diverges with 24.84% RMSE, while Hybrid sub-sampling (Case 2) remains stable but requires continuous 1 Hz current integration.*
 
 ---
 
@@ -107,12 +111,12 @@ To identify the physical boundaries of EKF sub-sampling, we swept the constant s
 | 2 | 0.0000 | 2.0761 |
 | 5 | 0.0000 | 4.7662 |
 | 10 | 0.0000 | 7.3381 |
-| 20 | 0.0000 | 7.9677 |
-| 50 | 0.0000 | 11.3535 |
-| 100 | 0.0000 | 12.2078 |
-| 200 | 0.0000 | 21.8722 |
-| 500 | 0.0000 | 37.3114 |
-| 1000 | 0.0000 | 35.3649 |
+| 20 | 0.0000 | 7.8584 |
+| 50 | 0.0000 | 8.8865 |
+| 100 | 0.0000 | 11.5583 |
+| 200 | 0.0000 | 17.3735 |
+| 500 | 0.0000 | 22.8058 |
+| 1000 | 0.0000 | 25.7989 |
 
 ![Safe dt curve](/home/volmax-studio/.gemini/antigravity/brain/706c8f28-84ae-40ca-b2e7-a0e0ac75ce73/.tempmediaStorage/results_safe_dt.png)
 *Figure 3: Safe-dt curve showing SOC RMSE vs. Sampling Interval. For dynamic load profiles, the sampling interval must remain below 2 to 5 seconds to prevent the error from exceeding a 3% safe boundary, whereas quasi-static profiles allow arbitrary sub-sampling.*
@@ -126,4 +130,4 @@ The safe sampling interval $\Delta t$ is strictly governed by the **bandwidth an
 
 Based on our independent replication and physical-boundary analysis:
 *   The claimed 99.65% reduction in sampling frequency is **Supported** strictly on the **quasi-static C/200 discharge regime**.
-*   The generalized application of this dynamic sampling scheme to real-time EV BMS applications is an **Artifact of the evaluation profile**. Under transient load profiles, the pure sub-sampling scheme **diverges immediately** (RMSE > 100%).
+*   The generalized application of this dynamic sampling scheme to real-time EV BMS applications is an **Artifact of the evaluation profile**. Under transient load profiles, the pure sub-sampling scheme **diverges and yields a critical error (RMSE of 24.84%)**, failing the absolute accuracy threshold.
