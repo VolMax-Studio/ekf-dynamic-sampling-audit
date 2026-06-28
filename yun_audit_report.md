@@ -75,7 +75,14 @@ We evaluated the dynamic sampling scheme on the **LG HG2 Mixed Drive Cycle at 25
 1.  **Time-scaled Process Noise ($Q_k = Q_c \cdot \Delta t$):** The process noise covariance is dynamically scaled with the time step $\Delta t$ to reflect increased state uncertainty over long intervals.
 2.  **Physical State Clamping:** The SOC state is strictly clamped to its physical bounds $[0.0, 1.0]$ in both the estimator updates and the intermediate state reconstruction to prevent unhandled overflow.
 
-We evaluated two distinct implementation cases:
+We evaluated two distinct implementation cases. 
+
+> [!NOTE]
+> **Clarification on Sample Reduction Rates:**
+> The sample reduction rate is **99.65%** for the quasi-static profile (Step 4) and **99.71%** for the dynamic profile (Step 5). This slight difference is expected and is a mathematical consequence of:
+> 1.  **Time Horizons:** The quasi-static profile runs for 700,000 seconds, whereas the dynamic profile runs for 47,517 seconds.
+> 2.  **Threshold Crossing:** The dynamic sampling rule switches sampling interval from 1000s to 100s when the estimated SOC crosses the 30% threshold. The exact time steps at which this transition occurs are profile-dependent, causing minor differences in the final sample counts.
+
 
 ### 5.1 Case 1: Pure Sub-sampling (The Audited Claim)
 Both the State Prediction (Coulomb counting) and Measurement Update steps of the EKF are sub-sampled. The microcontroller sleeps between sampling instants and performs a single EKF step using the current and voltage measured at the sampling instant.
@@ -120,6 +127,12 @@ To identify the physical boundaries of EKF sub-sampling, we swept the constant s
 
 ![Safe dt curve](/home/volmax-studio/.gemini/antigravity/brain/706c8f28-84ae-40ca-b2e7-a0e0ac75ce73/.tempmediaStorage/results_safe_dt.png)
 *Figure 3: Safe-dt curve showing SOC RMSE vs. Sampling Interval. For dynamic load profiles, the sampling interval must remain below 2 to 5 seconds to prevent the error from exceeding a 3% safe boundary, whereas quasi-static profiles allow arbitrary sub-sampling.*
+
+> [!NOTE]
+> **Explaining safe-$\Delta t$ Curve Trends:**
+> *   **Slight Non-monotonicity (e.g., between 1 s and 2 s):** This is a tuning artifact of the linear process noise covariance scaling ($Q_k = Q_c \cdot \Delta t$) interacting with the fixed measurement noise covariance $R_v$. A step of 2s allows the EKF to place slightly higher trust in the voltage updates, compensating for minor initialization transients.
+> *   **Saturating Error at High $\Delta t$ ($>500\text{ s}$):** Rather than growing linearly to infinity, the SOC estimation error saturates around 25%. This is a direct artifact of physical SOC state clamping to $[0.0, 1.0]$. Once the estimator hits the boundary, further time step increases do not increase the RMSE linearly. Note that all points above 5 seconds are already deep in the unusable and unsafe estimation regime.
+
 
 ### 6.1 Structural Conclusion
 The safe sampling interval $\Delta t$ is strictly governed by the **bandwidth and transient dynamics of the load current**, not by the SOC level. Keying the sampling rate to the SOC level (e.g., slowing to 1000 s when SOC > 30%) optimizes the wrong axis. A transient current pulse at 80% SOC causes the same integration error and linearization mismatch as a pulse at 20% SOC. Therefore, the dynamic sampling rule proposed in the target paper is an artifact of the quasi-static profile used for its evaluation and is fundamentally unsuitable for real-world electric vehicle battery management systems.
