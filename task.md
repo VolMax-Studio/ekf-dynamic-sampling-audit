@@ -68,37 +68,37 @@ profile-dependent and derive the safe-Δt-vs-dynamics curve.
       noise. (Echo of the HALO base-R² discipline: prove the floor before the ceiling.)
 
 ## Stage 2 — Reproduce the quasi-static regime (their home turf)
-- [ ] Construct/obtain a C/200-class slow discharge (≈their 700k s profile).
-- [ ] Apply their rule (>30% → 1000 s; ≤30% → 100 s).
-- [ ] **GATE 2:** sub-sampled EKF must ≈ match full-rate EKF here (reproduce their sub-1%).
+- [x] Construct/obtain a C/200-class slow discharge (≈their 700k s profile).
+- [x] Apply their rule (>30% → 1000 s; ≤30% → 100 s).
+- [x] **GATE 2:** sub-sampled EKF must ≈ match full-rate EKF here (reproduce their sub-1%).
       If we CANNOT reproduce their good result on quasi-static data, the bug is ours —
       fix before touching dynamic profiles. (We must reproduce them before we critique them.)
 
 ## Stage 3 — Dynamic-load evaluation (the real test)
-- [ ] Run EKF + their sampling rule on DST / FUDS / US06 (NMC cell, re-fit ECM).
-- [ ] Error vs. true SOC only (R2). Plot estimation error + EKF covariance trace over time.
-- [ ] Show whether/where the estimate diverges or covariance explodes.
-- [ ] Attribute divergence to the R1 mechanism explicitly (Δt vs. load time constant),
+- [x] Run EKF + their sampling rule on DST / FUDS / US06 (NMC cell, re-fit ECM).
+- [x] Error vs. true SOC only (R2). Plot estimation error + EKF covariance trace over time.
+- [x] Show whether/where the estimate diverges or covariance explodes.
+- [x] Attribute divergence to the R1 mechanism explicitly (Δt vs. load time constant),
       with the actual numbers (step Δt, current slew within a step, resulting integral error).
 
 ## Stage 4 — The load-bearing deliverable: safe-Δt curve
-- [ ] Sweep Δt; characterize **max safe Δt as a function of load bandwidth / SOC-rate**.
-- [ ] Show: safe Δt ≈ 1000 s on C/200 (reproduces them) → ≈ seconds on dynamic load.
-- [ ] State the structural point: their adaptation keys on SOC-level, but the variable
+- [x] Sweep Δt; characterize **max safe Δt as a function of load bandwidth / SOC-rate**.
+- [x] Show: safe Δt ≈ 1000 s on C/200 (reproduces them) → ≈ seconds on dynamic load.
+- [x] State the structural point: their adaptation keys on SOC-level, but the variable
       that governs estimator stability is signal bandwidth — uncorrelated with SOC level.
       A transient at 80% SOC is as hard as one at 20%. **The adaptation optimizes the
       wrong axis.**
 
 ## Stage 5 — Report (`yun_audit_report.md`)
-- [ ] Lead with scope boundary (R7) and the RMSE-conflation clarification (proposed-vs-full,
+- [x] Lead with scope boundary (R7) and the RMSE-conflation clarification (proposed-vs-full,
       not vs-true).
-- [ ] State limitations of OUR reproduction first (re-fit cell ≠ their exact cell; our ECM;
+- [x] State limitations of OUR reproduction first (re-fit cell ≠ their exact cell; our ECM;
       constructed quasi-static profile), then the finding.
-- [ ] Verdict per claim: quasi-static reduction = **supported on that regime**; the
+- [x] Verdict per claim: quasi-static reduction = **supported on that regime**; the
       generalized "for EV BMS" framing = **artifact of the quasi-static profile**.
-- [ ] Generous citation of Yun et al. (DOI). Frame: independent replication with open
+- [x] Generous citation of Yun et al. (DOI). Frame: independent replication with open
       questions, burden on our reproduction — not impugning their integrity.
-- [ ] Every number traces to `results/yun_audit_metrics.json` (R6).
+- [x] Every number traces to `results/yun_audit_metrics.json` (R6).
 
 ---
 
