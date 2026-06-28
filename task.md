@@ -48,22 +48,22 @@ profile-dependent and derive the safe-Δt-vs-dynamics curve.
 ---
 
 ## Stage 0 — Provenance & data sanity
-- [ ] Fetch chosen NMC drive-cycle dataset (Kollmeyer LG or equivalent); record exact
+- [x] Fetch chosen NMC drive-cycle dataset (Kollmeyer LG or equivalent); record exact
       source URL, cell, capacity, license in `data/PROVENANCE.md`.
-- [ ] Confirm dataset provides: I(t), V(t), T, and a Coulomb-count reference SOC.
-- [ ] **GATE 0:** if no independent true-SOC reference exists → STOP. Without R2 ground
+- [x] Confirm dataset provides: I(t), V(t), T, and a Coulomb-count reference SOC.
+- [x] **GATE 0:** if no independent true-SOC reference exists → STOP. Without R2 ground
       truth there is no audit. Do not fabricate a reference from our own EKF.
-- [ ] **GATE 0b:** Calculate the SOC reference by dividing with the actual discharged capacity
+- [x] **GATE 0b:** Calculate the SOC reference by dividing with the actual discharged capacity
       for that specific cycle and temperature, not the 3.0 Ah catalog nominal capacity. Record
       the actual capacity used in `data/PROVENANCE.md`.
 
 ## Stage 1 — ECM + EKF core (re-fit, verified)
-- [ ] Implement 1st-order ECM + EKF (their Eq. 1–13 structure; cite, paraphrase, don't copy).
-- [ ] Re-fit Ri/Rd/Cd/OCV-SOC on the dataset cell (R3). Log fitted params + fit residuals.
-- [ ] **GATE 1b:** Perform ECM re-fitting and evaluation at the SAME temperature. Primary analysis is at 25°C.
+- [x] Implement 1st-order ECM + EKF (their Eq. 1–13 structure; cite, paraphrase, don't copy).
+- [x] Re-fit Ri/Rd/Cd/OCV-SOC on the dataset cell (R3). Log fitted params + fit residuals.
+- [x] **GATE 1b:** Perform ECM re-fitting and evaluation at the SAME temperature. Primary analysis is at 25°C.
       Cross-temperature tests go only into a secondary robustness section.
-- [ ] Sanity: full-rate (1 s) EKF tracks true SOC within a sane band on a held-out segment.
-- [ ] **GATE 1:** full-rate EKF RMSE vs. true SOC must be reasonable (e.g. < ~2–3%) BEFORE
+- [x] Sanity: full-rate (1 s) EKF tracks true SOC within a sane band on a held-out segment.
+- [x] **GATE 1:** full-rate EKF RMSE vs. true SOC must be reasonable (e.g. < ~2–3%) BEFORE
       any sub-sampling test. If the baseline itself is broken, every downstream number is
       noise. (Echo of the HALO base-R² discipline: prove the floor before the ceiling.)
 

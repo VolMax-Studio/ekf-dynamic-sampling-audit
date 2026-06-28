@@ -1,0 +1,7 @@
+# Data and cache files
+data/*.zip
+data/LG_HG2/
+__pycache__/
+*.pyc
+
+scratch/
