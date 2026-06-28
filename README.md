@@ -119,8 +119,7 @@ isn't claimed.
 ## Status
 
 Pre-revenue independent audit. Method validated on public data by its author; not yet
-independently reviewed. DOI minted only after the finding is final and the report leads
-with its own limitations. Until then the git tag is the only marker — reversible by design.
+independently reviewed. Published on Zenodo. DOI: [10.5281/zenodo.21009974](https://doi.org/10.5281/zenodo.21009974)
 
 ## License
 

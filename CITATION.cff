@@ -6,6 +6,7 @@ authors:
     affiliation: VolMax Studio Lab
 title: "Independent Audit of EKF Battery SOC Estimation and Dynamic Sampling under Transient Load Profiles"
 version: 1.0.0
+doi: "10.5281/zenodo.21009974"
 date-released: 2026-06-28
 repository-code: "https://github.com/VolMax-Studio/ekf-dynamic-sampling-audit"
 references:
