@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use this software or reproduction results, please cite it as below."
+authors:
+  - family-names: Nestorov
+    given-names: Ivan
+    affiliation: VolMax Studio Lab
+title: "Independent Audit of EKF Battery SOC Estimation and Dynamic Sampling under Transient Load Profiles"
+version: 1.0.0
+date-released: 2026-06-28
+repository-code: "https://github.com/VolMax-Studio/ekf-dynamic-sampling-audit"
+references:
+  - type: article
+    authors:
+      - family-names: Yun
+        given-names: Seungjae
+      - family-names: Jeon
+        given-names: Jeongju
+      - family-names: Lee
+        given-names: Eunseong
+      - family-names: Jeong
+        given-names: Taeyeon
+      - family-names: Kim
+        given-names: Sunhee
+    title: "FPGA Implementation of Battery State-of-Charge Estimation Using Extended Kalman Filter and Dynamic Sampling"
+    journal: "World Electric Vehicle Journal"
+    volume: 16
+    number: 10
+    pages: 587
+    year: 2025
+    doi: "10.3390/wevj16100587"
+  - type: data
+    authors:
+      - family-names: Kollmeyer
+        given-names: Phillip
+      - family-names: Naguib
+        given-names: Mina
+      - family-names: Skells
+        given-names: Michael
+    title: "LG 18650HG2 Li-ion Battery Data and Example Deep Neural Network xEV SOC Estimator Script"
+    publisher: "Mendeley Data"
+    year: 2020
+    doi: "10.17632/cp3473x7xv.3"
