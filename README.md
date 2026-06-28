@@ -78,9 +78,8 @@ capacity measurement — stated as such so no hidden conflation enters our own n
    ≤30% → 100 s).
 3. **Quasi-static reproduction (GATE 2):** synthetic C/200 → confirm sub-sampled EKF
    matches full-rate (reproduces the paper's good result *before* any critique).
-4. **Dynamic evaluation:** EKF + sampling rule on real drive cycles; error vs. tester
-   truth; covariance trace over time.
-5. **Safe-Δt-facing deliverable:** max stable Δt as a function of load dynamics — the load-bearing
+4. **Dynamic evaluation:** EKF + sampling rule on real drive cycles (yielding 99.71% sample reduction but suffering 24.84% SOC estimation error); error vs. tester truth; covariance trace over time.
+5. **Safe-Δt curve:** max stable Δt as a function of load dynamics — the load-bearing
    deliverable.
 
 **Divergence mechanism (named precisely — not "Nyquist"):** when Δt exceeds the load time
