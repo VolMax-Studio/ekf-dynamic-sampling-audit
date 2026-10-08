@@ -1,0 +1,27 @@
+{
+  "baseline_commit": "ad09fd6267cb7078adc3944353ae923edbc956c2",
+  "baseline_tree": "bfefebca26ecb4fd674a6c6cea10c285926f600f",
+  "behavior": {
+    "callbacks": false,
+    "executable": false,
+    "network_calls": false,
+    "telemetry": false
+  },
+  "canonical_url": "https://github.com/VolMax-Studio/ekf-dynamic-sampling-audit",
+  "default_branch_at_recording": "main",
+  "license": {
+    "detected_spdx": "MIT",
+    "files": [
+      "LICENSE"
+    ],
+    "note": "This provenance record does not grant or alter license rights."
+  },
+  "owner": "VolMax-Studio",
+  "record_id": "urn:volmax:github:VolMax-Studio/ekf-dynamic-sampling-audit:ad09fd6267cb7078adc3944353ae923edbc956c2",
+  "record_type": "volmax.repository-provenance",
+  "record_version": 1,
+  "recorded_at": "2026-10-08T19:33:48+00:00",
+  "repository": "VolMax-Studio/ekf-dynamic-sampling-audit",
+  "schema": "urn:volmax:provenance:v1",
+  "scope": "Repository identity and baseline commit only; historical tags, releases, evidence, authorship, and existing file bytes are unchanged."
+}
